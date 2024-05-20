@@ -1,7 +1,10 @@
+using OnlineVerilog.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddTransient<VerilogHelper>();
 
 var app = builder.Build();
 
