@@ -1,0 +1,43 @@
+﻿@page "{id:int?}"
+@model OnlineVerilog.Pages.ExamplesSection.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<h4>Example</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label  class="control-label">@ViewData["Section"]</label>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">@ViewData["Header"]</label>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">@ViewData["Body"]</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solution" class="control-label"></label>
+                <textarea asp-for="Solution" class="form-control" rows="5" cols="50"></textarea>
+                <span asp-validation-for="Solution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
