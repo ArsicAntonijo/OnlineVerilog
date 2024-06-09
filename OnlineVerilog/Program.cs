@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using OnlineVerilog.Context;
 using OnlineVerilog.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<VerilogHelper>();
+builder.Services.AddDbContext<VeronContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 var app = builder.Build();
 
