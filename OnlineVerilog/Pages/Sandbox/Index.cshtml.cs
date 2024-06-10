@@ -26,7 +26,7 @@ namespace OnlineVerilog.Pages.Sandbox
         }
         public void OnPost()
         {
-            ViewData["Output"] = _vh.ExecuteTheProcess("topmodule", Code);
+            ViewData["Output"] = _vh.ExecuteTheProcess("topmodule.v", Code, "testbench.v", TestbenchCode);
         }
     }
 }

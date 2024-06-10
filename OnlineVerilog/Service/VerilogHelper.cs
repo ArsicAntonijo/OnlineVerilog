@@ -11,12 +11,13 @@ namespace OnlineVerilog.Service
         {
             if (!Directory.Exists(WorkingDirectory)) { Directory.CreateDirectory(WorkingDirectory); }           
         }
-        public string ExecuteTheProcess(string fileName, string fileContent)
+        public string ExecuteTheProcess(string moduleFileName, string modulefileContent, string testbenchFileName, string testbenchFileContent)
         {
             TempDirectory = Path.Combine(WorkingDirectory, DateTime.Now.ToString("yyMMddHHmmfffffff"));
             if (!Directory.Exists(TempDirectory)) { Directory.CreateDirectory(TempDirectory); }
-            File.WriteAllText(Path.Combine(TempDirectory, fileName), fileContent);
-            string compileOutput = Compile(fileName);
+            File.WriteAllText(Path.Combine(TempDirectory, moduleFileName), modulefileContent);
+            File.WriteAllText(Path.Combine(TempDirectory, testbenchFileName), testbenchFileContent);
+            string compileOutput = Compile(moduleFileName, testbenchFileName);
             if (string.IsNullOrEmpty(compileOutput))
             {
                 string runOutput = Run();
@@ -25,13 +26,13 @@ namespace OnlineVerilog.Service
             if (Directory.Exists(TempDirectory)) { Directory.Delete(TempDirectory, true); }
             return compileOutput;
         }
-        private string Compile(string fileName)
+        private string Compile(string moduleFileName, string testbenchFileName)
         {
             string outp = string.Empty;
             Process p = new();
             p.StartInfo.FileName = "iverilog";
             p.StartInfo.WorkingDirectory = TempDirectory;
-            p.StartInfo.Arguments = $" -o {ExeName} {fileName}";
+            p.StartInfo.Arguments = $" -o {ExeName} {testbenchFileName} {moduleFileName}";
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.RedirectStandardError = true;
