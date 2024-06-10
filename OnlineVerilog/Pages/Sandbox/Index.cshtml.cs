@@ -2,17 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OnlineVerilog.Service;
 
-namespace OnlineVerilog.Pages.User
+namespace OnlineVerilog.Pages.Sandbox
 {
-    public class ExerciseModel : PageModel
+    public class IndexModel : PageModel
     {
-        private readonly ILogger<ExerciseModel> _logger;
+        private readonly ILogger<IndexModel> _logger;
         private readonly VerilogHelper _vh;
-        [BindProperty]
-        public string FileName { get; set; }
+        //[BindProperty]
+        //public string FileName { get; set; }
         [BindProperty]
         public string Code { get; set; }
-        public ExerciseModel(ILogger<ExerciseModel> logger, VerilogHelper vh)
+        [BindProperty]
+        public string TestbenchCode { get; set; }
+        public IndexModel(ILogger<IndexModel> logger, VerilogHelper vh)
         {
             _logger = logger;
             _vh = vh;
@@ -24,7 +26,7 @@ namespace OnlineVerilog.Pages.User
         }
         public void OnPost()
         {
-            ViewData["Output"] = _vh.ExecuteTheProcess(FileName, Code);
+            ViewData["Output"] = _vh.ExecuteTheProcess("topmodule", Code);
         }
     }
 }

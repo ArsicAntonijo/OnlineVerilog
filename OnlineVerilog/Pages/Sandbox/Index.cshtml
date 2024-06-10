@@ -1,0 +1,30 @@
+﻿@page
+@model OnlineVerilog.Pages.Sandbox.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    string o = ViewData["Output"].ToString();
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <form method="post">
+        <!--<label>Enter file name:</label>
+        <input type="text" asp-for="FileName" />-->
+        <br /><br />
+        <label>Enter verilog code:</label>
+        <label>Enter testbench code:</label><br />
+        <textarea asp-for="Code" rows="4" cols="50"></textarea>
+        <textarea asp-for="TestbenchCode" rows="4" cols="50"></textarea><br /><br />
+        <input type="submit" value="Submit" />
+    </form>
+
+</div>
+<br />
+<br />
+<br />
+<div class="text-center">
+    @if (!string.IsNullOrEmpty(o))
+    {
+        <h2>The result of the code is:</h2>
+        <p>@o</p>
+    }
+</div>
