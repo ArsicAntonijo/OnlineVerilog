@@ -13,10 +13,12 @@ namespace OnlineVerilog.Pages.ExamplesSection
     public class IndexModel : PageModel
     {
         private readonly OnlineVerilog.Context.VeronContext _context;
+        private readonly OnlineVerilog.Service.VerilogHelper _vh;
 
-        public IndexModel(OnlineVerilog.Context.VeronContext context)
+        public IndexModel(OnlineVerilog.Context.VeronContext context, Service.VerilogHelper vh)
         {
             _context = context;
+            _vh = vh;
         }
 
         public IActionResult OnGet(string id)
@@ -28,10 +30,11 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 ViewData["Header"] = Example.Header;
                 ViewData["Section"] = Example.Section;
                 ViewData["Body"] = Example.Body;
+                ViewData["Testbench"] = Example.TestBench;
             }
             return Page();
         }
-
+        [BindProperty]
         public Example Example { get; set; } = default!;
         [BindProperty]
         public string Solution { get; set; }
@@ -39,15 +42,8 @@ namespace OnlineVerilog.Pages.ExamplesSection
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
-
-            //_context.Examples.Add(Example);
-            //await _context.SaveChangesAsync();
-
-            return RedirectToPage("../Index");
+            ViewData["Output"] = _vh.ExecuteTheProcess("topmodule.v", Solution, "testbench.v", Example.TestBench);
+            return Page();
         }
     }
 }
