@@ -1,0 +1,19 @@
+﻿@model List<OnlineVerilog.Models.Example>
+@{
+    var distinctSections = Model.Select(m => m.Section).Distinct().ToList();
+    //Model.GroupBy(p => p.Section).Distinct().ToList();
+}
+<h3>Examples</h3>
+<ul>
+    @foreach (var distinctSection in distinctSections)
+    {
+        var headers = Model.Where(p => p.Section == distinctSection).Select(m => m.Header).ToList();
+        <li>@distinctSection</li>
+        <ul>
+            @foreach (var header in headers)
+            {
+                <li>@header</li>
+            }
+        </ul>
+    }
+</ul>
