@@ -3,44 +3,79 @@
 
 @{
     ViewData["Title"] = "Index";
+    var a = @ViewData["Solution"];
 }
 
-<h1>Index</h1>
-
-<h4>Example</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label  class="control-label">@ViewData["Section"]</label>
-            </div>
-            <div class="form-group">
-                <label  class="control-label">@ViewData["Header"]</label>
-            </div>
-            <div class="form-group">
-                <label  class="control-label">@ViewData["Body"]</label>
-            </div>
-            <div class="form-group">
-                <textarea asp-for="Example.TestBench" class="form-control" rows="5" cols="50" hidden><@ViewData["Testbench"]</textarea>
-            </div>
-            <div class="form-group">
-                <label asp-for="Solution" class="control-label"></label>
-                <textarea asp-for="Solution" class="form-control" rows="5" cols="50"></textarea>
-                <span asp-validation-for="Solution" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div style="float: left; width: 15%;">
+    @await Component.InvokeAsync("Examples")
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
+<div class="row" style="float: right; width: 85%; background-color: aliceblue; margin-top: -15px; padding: 20px; height: 680px">
+    <div class="col-md-3" style="margin-bottom: 10px;">
+        <br /><br />
+        <h4>@ViewData["Header"]</h4>
+        <hr />
+        <label class="control-label">@ViewData["Body"]</label>
+    </div>
+    <div class="col-md-9">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="row main-panel">
+                <div class="col-md-10" style="align-content:center;">
+                    <h6>Write your solution below</h6>
+                </div>
+                <div class="col-md-2" style="text-align: right; padding-right: 5px; align-content:center; text-align: center;">
+                    <input type="submit" value="Execute" class="btn btn-success" />
+                </div>
+            </div>
+            <div class="form-group">
+                <textarea asp-for="Example.TestBench" class="form-control" rows="5" cols="50" hidden>@ViewData["Testbench"]</textarea>
+            </div>
+            <div class="editor">
+                <div class="numbers">
+                    <span></span>
+                </div>
+                <textarea asp-for="Solution" class="txtAr" rows="17" cols="150" title="Solution Code"></textarea>
+                <!--<span asp-validation-for="Solution" class="text-danger"></span>-->
+            </div>            
+        </form>
+        <div class="form-group" style="margin-top: 4px">
+            <textarea class="form-control" rows="6" cols="50" disabled style="resize: none;">@ViewData["Output"]</textarea>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    const textarea = document.querySelector(".txtAr");
+    const numbers = document.querySelector(".numbers");
+    textarea.addEventListener("keyup", (e) => {
+        const num = e.target.value.split("\n").length;
+        numbers.innerHTML = Array(num).fill("<span></span>").join("");
+    });
+    textarea.addEventListener("keydown", (event) => {
+        if (event.key === "Tab") {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+
+            textarea.value =
+                textarea.value.substring(0, start) +
+                "\t" +
+                textarea.value.substring(end);
+
+            event.preventDefault();
+        }
+    });
+    window.onload = function () {
+        if (textarea.value === ""){
+            textarea.value = "module topmodule;\r\rendmodule";
+
+            const num = textarea.value.split("\n").length;
+            numbers.innerHTML = Array(num).fill("<span></span>").join("");
+        }
+    }
+</script>
+          

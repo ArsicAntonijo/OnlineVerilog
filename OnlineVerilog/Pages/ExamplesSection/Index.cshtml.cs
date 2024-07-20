@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineVerilog.Context;
 using OnlineVerilog.Models;
+using OnlineVerilog.Service;
 
 namespace OnlineVerilog.Pages.ExamplesSection
 {
@@ -14,6 +15,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
     {
         private readonly OnlineVerilog.Context.VeronContext _context;
         private readonly OnlineVerilog.Service.VerilogHelper _vh;
+        private readonly string initialSolution = "module topmodule;\r\rendmodule\r";
 
         public IndexModel(OnlineVerilog.Context.VeronContext context, Service.VerilogHelper vh)
         {
@@ -27,10 +29,14 @@ namespace OnlineVerilog.Pages.ExamplesSection
             {
                 int Id = int.Parse(id);
                 Example = _context.Examples.Where(e => e.Id == Id).FirstOrDefault();
-                ViewData["Header"] = Example.Header;
-                ViewData["Section"] = Example.Section;
-                ViewData["Body"] = Example.Body;
-                ViewData["Testbench"] = Example.TestBench;
+                if (Example != null)
+                {
+                    ViewData["Header"] = Example.Header;
+                    ViewData["Section"] = Example.Section;
+                    ViewData["Body"] = Example.Body;
+                    ViewData["Testbench"] = Example.TestBench;
+                }
+                //ViewData["Solution"] = initialSolution;
             }
             return Page();
         }
@@ -42,7 +48,12 @@ namespace OnlineVerilog.Pages.ExamplesSection
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            ViewData["Output"] = _vh.ExecuteTheProcess("topmodule.v", Solution, "testbench.v", Example.TestBench);
+            string output = VerilogHelper.ValidateSolution(Solution);
+            ViewData["Output"] = output;
+            if (string.IsNullOrEmpty(output))
+            {
+                ViewData["Output"] = _vh.ExecuteTheProcess("topmodule.v", Solution, "testbench.v", Example.TestBench);
+            }
             return Page();
         }
     }

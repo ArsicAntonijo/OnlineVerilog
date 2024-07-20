@@ -20,3 +20,74 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*...*/
+.row-middle {
+    justify-content: center;
+    align-items: center;
+}
+
+.newExamplebutton{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.ToMiddle {
+    text-align: center;
+}
+
+.main-panel {
+    border: 1px solid grey;
+    color: aliceblue;
+    background-color: dimgrey;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    margin: 0;
+}
+
+.solution-area {
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+
+/*.............*/
+.editor {
+    display: inline-flex;
+    gap: 10px;
+    font-family: Consolas, "Courier New", Courier, monospace;
+    line-height: 21px;
+    background-color: #282a3a;
+    border-radius: 2px;
+    padding: 20px 10px;
+    width: auto;
+}
+
+.txtAr {
+    line-height: 21px;
+    overflow-y: hidden;
+    padding: 0;
+    border: 0;
+    background: #282a3a;
+    color: #fff;
+    min-width: 450px;
+    width: 100%;
+    outline: none;
+    resize: none;
+    font-family: Consolas, "Courier New", Courier, monospace;
+}
+
+.numbers {
+    width: 20px;
+    text-align: right;
+}
+
+.numbers span {
+    counter-increment: linenumber;
+}
+
+.numbers span::before {
+    content: counter(linenumber);
+    display: block;
+    color: #506882;
+}

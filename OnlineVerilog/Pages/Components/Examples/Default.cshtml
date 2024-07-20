@@ -3,17 +3,29 @@
     var distinctSections = Model.Select(m => m.Section).Distinct().ToList();
     //Model.GroupBy(p => p.Section).Distinct().ToList();
 }
-<h3>Examples</h3>
-<ul>
+<h3 style="color:cornflowerblue">Examples</h3>
+<ul class="list-unstyled" style="color:cornflowerblue">
     @foreach (var distinctSection in distinctSections)
     {
-        var headers = Model.Where(p => p.Section == distinctSection).Select(m => m.Header).ToList();
-        <li>@distinctSection</li>
-        <ul>
+        var headers = Model.Where(p => p.Section == distinctSection).ToList();
+        <li><a href="#" onclick="hideList('@distinctSection')" style="text-decoration: none;">@distinctSection</a></li>
+        <ol id="@distinctSection" class="list-unstyled" style="margin-left: 15px;">
             @foreach (var header in headers)
             {
-                <li>@header</li>
+                <li><a href="/ExamplesSection/@header.Id" style="text-decoration: none;"> @header.Header</a></li>
             }
-        </ul>
+        </ol>
     }
 </ul>
+
+<script>
+    function hideList(id) {
+        var myList = document.getElementById(id);
+
+        if (myList.style.display === "none") {
+            myList.style.display = "block";
+        } else {
+            myList.style.display = "none";
+        }
+    }
+</script>

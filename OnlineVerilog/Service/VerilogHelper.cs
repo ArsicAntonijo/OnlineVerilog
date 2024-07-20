@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace OnlineVerilog.Service
 {
@@ -61,6 +62,14 @@ namespace OnlineVerilog.Service
             p.WaitForExit();
 
             return outp;
+        }
+
+        internal static string ValidateSolution(string solution)
+        {
+            Match m = new Regex("module(.+?)endmodule", RegexOptions.Singleline).Match(solution);
+            if (!m.Success) { return "Solution must start with \"module\" and finish with \"endmodule\""; }
+
+            return string.Empty;
         }
     }
 }
