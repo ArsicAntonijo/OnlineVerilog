@@ -3,20 +3,23 @@
     var distinctSections = Model.Select(m => m.Section).Distinct().ToList();
     //Model.GroupBy(p => p.Section).Distinct().ToList();
 }
-<h3 style="color:cornflowerblue">Examples</h3>
-<ul class="list-unstyled" style="color:cornflowerblue">
-    @foreach (var distinctSection in distinctSections)
-    {
-        var headers = Model.Where(p => p.Section == distinctSection).ToList();
-        <li><a href="#" onclick="hideList('@distinctSection')" style="text-decoration: none;">@distinctSection</a></li>
-        <ol id="@distinctSection" class="list-unstyled" style="margin-left: 15px;">
-            @foreach (var header in headers)
-            {
-                <li><a href="/ExamplesSection/@header.Id" style="text-decoration: none;"> @header.Header</a></li>
-            }
-        </ol>
-    }
-</ul>
+<div id="exampleList">
+    <h3 style="color:cornflowerblue">Задаци</h3>
+    <ul class="list-unstyled" style="color:cornflowerblue">
+        @foreach (var distinctSection in distinctSections)
+        {
+            var headers = Model.Where(p => p.Section == distinctSection).ToList();
+            <li><a href="#" onclick="hideList('@distinctSection')" style="text-decoration: none;">@distinctSection</a></li>
+            <ol id="@distinctSection" class="list-unstyled" style="margin-left: 15px;">
+                @foreach (var header in headers)
+                {
+                    <li><a href="/ExamplesSection/@header.Id" style="text-decoration: none;"> @header.Header</a></li>
+                }
+            </ol>
+        }
+    </ul>
+</div>
+
 
 <script>
     function hideList(id) {
