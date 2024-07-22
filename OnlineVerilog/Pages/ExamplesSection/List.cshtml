@@ -1,0 +1,49 @@
+﻿@page
+@model OnlineVerilog.Pages.ExamplesSection.ListModel
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Лист свих задатака</h1>
+
+<p>
+    <a asp-page="Create">Креирај нови задатак</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Секција</th>
+            <th>Наслов</th>
+            <th>Опис</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Example) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Section)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Header)
+            </td>
+            <td>
+                @if (item.Body.Length < 100)
+                {
+                    @Html.DisplayFor(modelItem => item.Body)
+                }
+                else
+                {
+                    string str = item.Body.Substring(0, 99) + "...";
+                    @Html.DisplayFor(modelItem => str);
+                }
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Измени</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Обриши</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
