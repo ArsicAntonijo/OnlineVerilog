@@ -37,8 +37,9 @@
             <div class="editor">
                 <div class="numbers">
                     <span></span>
-                </div>
-                <textarea asp-for="Solution" class="txtAr" rows="17" cols="200" title="Solution Code" spellcheck="false"></textarea>
+                </div> 
+                <div asp-for="Solution" id="textEditor" class="txtAr" contenteditable="true"></div>
+                <!-- <textarea asp-for="Solution" class="txtAr" rows="17" cols="200" title="Solution Code" spellcheck="false"></textarea>-->
             </div>            
         </form>
         <div class="form-group" style="margin-top: 4px">
@@ -51,8 +52,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-    const textarea = document.querySelector(".txtAr");
+   /* const textarea = document.querySelector(".txtAr");
     const numbers = document.querySelector(".numbers");
     textarea.addEventListener("keyup", (e) => {
         const num = e.target.value.split("\n").length;
@@ -78,7 +80,7 @@
             const num = textarea.value.split("\n").length;
             numbers.innerHTML = Array(num).fill("<span></span>").join("");
         }
-    }
+    }*/
     function hideShow() {
         console.log("heheh");
         let list = document.getElementById("exampleList");
@@ -97,5 +99,59 @@
             panel.style.width = "98%";
         }
     }
+    // SQL keywords
+    let textarea = document.getElementById("textEditor");
+    var keywords = ["SELECT", "FROM", "WHERE", "LIKE", "BETWEEN", "NOT LIKE", "FALSE", "NULL", "FROM", "TRUE", "NOT IN"];
+    // Keyup event
+    $("#textEditor").on("keyup", function (e) {
+        // Space key pressed
+        if (e.keyCode == 32) {
+            var newHTML = "";
+            // Loop through words
+            $(this).text().replace(/[\s]+/g, " ").trim().split(" ").forEach(function (val) {
+                // If word is statement
+                if (keywords.indexOf(val.trim().toUpperCase()) > -1)
+                    newHTML += "<span class='statement'>" + val + "&nbsp;</span>";
+                else
+                    newHTML += "<span class='other'>" + val + "&nbsp;</span>";
+            });
+            $(this).html(newHTML);
+
+            // Set cursor postion to end of text
+            var child = $(this).children();
+            var range = document.createRange();
+            var sel = window.getSelection();
+            range.setStart(child[child.length - 1], 1);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            this.focus();
+        }
+    });
+    /*$("#textEditor").on("keyup", function (e) {
+        // Space key pressed
+        if (e.keyCode == 32) {
+            var newHTML = "";
+            // Loop through words
+            $(this).text().replace(/[\s]+/g, " ").trim().split(" ").forEach(function (val) {
+                // If word is statement
+                if (keywords.indexOf(val.trim().toUpperCase()) > -1)
+                    newHTML += "<span class='statement'>" + val + "&nbsp;</span>";
+                else
+                    newHTML += "<span class='other'>" + val + "&nbsp;</span>";
+            });
+            $(this).html(newHTML);
+
+            // Set cursor postion to end of text
+            var child = $(this).children();
+            var range = document.createRange();
+            var sel = window.getSelection();
+            range.setStart(child[child.length - 1], 1);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            this.focus();
+        }
+    });*/
 </script>
           
