@@ -5,6 +5,7 @@ using OnlineVerilog.Service;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSession();
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<VerilogHelper>();
 builder.Services.AddDbContext<VeronContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));

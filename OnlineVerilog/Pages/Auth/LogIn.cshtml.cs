@@ -33,6 +33,10 @@ namespace OnlineVerilog.Pages.Auth
             User? u = _context.Users.Where(x => x.Email == User.Email).FirstOrDefault();
             if (u != null && u.Password.Equals(User.Password))
             {
+                // Ovde sesiju kreiramo
+                //int type = u.Type.Equals("admin") ? 2 : 1;
+                //HttpContext.Session.SetInt32("Active", type);
+                //HttpContext.Session.SetString("Name", u.Name);
                 return RedirectToPage("../Index");
             }
             return Page();

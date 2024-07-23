@@ -60,7 +60,7 @@ body {
     background-color: #282a3a;
     border-radius: 2px;
     padding: 20px 10px;
-    width: auto;
+    width: 100%;
 }
 
 .txtAr {
@@ -90,4 +90,34 @@ body {
     content: counter(linenumber);
     display: block;
     color: #506882;
+}
+
+.statement {
+    color: orange;
+}
+
+/* log in*/
+.logIn {
+    padding: 30px;
+    height: 395px;
+    border-radius: 5%;
+    box-sizing: border-box;
+    background: #ecf0f3;
+    box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+}
+
+.register {
+    padding: 30px;
+    margin-top: 50px;
+    height: 460px;
+    border-radius: 5%;
+    box-sizing: border-box;
+    background: #ecf0f3;
+    box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+}
+.blueColor {
+    color: cornflowerblue;
+}
+.ToRight {
+    margin-left: auto;
 }
