@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineVerilog.Models
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+        if (User.IsInRole("admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/ExamplesSection/Create">Креирај задатак</a>
+            </li>
+            
+        } 
+        <li class="nav-item dropdown">
+        @if (User.IsInRole("admin"))
+        {
+             <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">Админ</a>
+        }
+        else
+        {
+            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">Корисник</a>
+        }
+            <ul class="dropdown-menu">
+            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Профил</a></li>
+            <li><hr class="dropdown-divider"/></li>
+            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout">Излогуј се</a></li>
+        </ul>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Региструј се</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Логовање</a>
+    </li>
+}
+</ul>

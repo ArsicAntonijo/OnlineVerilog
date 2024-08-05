@@ -1,0 +1,40 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="row">
+    <div class="col-md-4 mx-auto logIn">
+        <div class="ToMiddle blueColor">            
+            <h1>Логовање</h1>
+            <hr />
+        </div>
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Емаил" />
+                <label asp-for="Input.Email" class="form-label">Емаил</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Шифра" />
+                <label asp-for="Input.Password" class="form-label">Шифра</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group ToMiddle">
+                <input type="submit" value="Улогуј се" class="btn btn-primary" />
+            </div>
+            <hr />
+            <div>
+                <p>
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Региструј се као нови корисник</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
