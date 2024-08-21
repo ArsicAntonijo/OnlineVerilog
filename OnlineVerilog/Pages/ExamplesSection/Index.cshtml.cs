@@ -33,8 +33,9 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 {
                     ViewData["Header"] = Example.Header;
                     ViewData["Section"] = Example.Section;
-                    ViewData["Body"] = Example.Body;
+                    ViewData["Body"] = Converting.StringToHtml(Example.Body);
                     ViewData["Testbench"] = Example.TestBench;
+                    ViewData["ImagePath"] = Example.imagePath;
                 }
                 //ViewData["Solution"] = initialSolution;
             }

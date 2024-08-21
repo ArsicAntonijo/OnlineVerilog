@@ -7,5 +7,6 @@
         public string Header { get; set; }
         public string Body { get; set; }
         public string TestBench { get; set; }
+        public string imagePath { get; set; } = string.Empty;
     }
 }

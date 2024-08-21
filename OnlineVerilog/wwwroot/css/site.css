@@ -99,7 +99,7 @@ body {
 /* log in*/
 .logIn {
     padding: 30px;
-    height: 395px;
+    height: auto;
     border-radius: 5%;
     box-sizing: border-box;
     background: #ecf0f3;
@@ -109,7 +109,7 @@ body {
 .register {
     padding: 30px;
     margin-top: 50px;
-    height: 460px;
+    height: auto;
     border-radius: 5%;
     box-sizing: border-box;
     background: #ecf0f3;

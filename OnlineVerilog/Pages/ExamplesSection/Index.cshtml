@@ -15,11 +15,16 @@
 </div>
 
 <div id="mainPanel" class="row" style="float: right; width: 85%; background-color: aliceblue; margin-top: -15px; padding: 20px; height: 100%">
-    <div class="col-md-12" >
-        
-        <h4>@ViewData["Header"]</h4>
+    <div class="col-md-12" >        
+        <h4 class="blueColor">@ViewData["Header"]</h4>
         <hr />
-        <label class="control-label">@ViewData["Body"]</label>
+        <p>@Html.Raw(ViewData["Body"])</p>
+        @if (ViewData["ImagePath"] != null && !ViewData["ImagePath"].ToString().Equals(""))
+        {
+            <div class="ToMiddle">
+                <img src="@ViewData["ImagePath"]" width="300" height="250" />
+            </div>
+        }
         <br /><br />
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
