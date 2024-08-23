@@ -12,21 +12,27 @@ namespace OnlineVerilog.Service
         {
             if (!Directory.Exists(WorkingDirectory)) { Directory.CreateDirectory(WorkingDirectory); }           
         }
-        public string ExecuteTheProcess(string moduleFileName, string modulefileContent, string testbenchFileName, string testbenchFileContent)
+        public (string, string) ExecuteTheProcess(string moduleFileName, string modulefileContent, string testbenchFileName, string testbenchFileContent)
         {
             TempDirectory = Path.Combine(WorkingDirectory, DateTime.Now.ToString("yyMMddHHmmfffffff"));
+
             if (!Directory.Exists(TempDirectory)) { Directory.CreateDirectory(TempDirectory); }
+
             File.WriteAllText(Path.Combine(TempDirectory, moduleFileName), modulefileContent);
             File.WriteAllText(Path.Combine(TempDirectory, testbenchFileName), testbenchFileContent);
+
             string compileOutput = Compile(moduleFileName, testbenchFileName);
             if (string.IsNullOrEmpty(compileOutput))
             {
                 string runOutput = Run();
-                return runOutput;
+                string vcdromlink = RenameAndUpload();
+                return (runOutput, vcdromlink);
             }
             if (Directory.Exists(TempDirectory)) { Directory.Delete(TempDirectory, true); }
-            return compileOutput;
+
+            return (compileOutput, string.Empty);
         }
+
         private string Compile(string moduleFileName, string testbenchFileName)
         {
             string outp = string.Empty;
@@ -70,6 +76,19 @@ namespace OnlineVerilog.Service
             if (!m.Success) { return "Solution must start with \"module\" and finish with \"endmodule\""; }
 
             return string.Empty;
+        }
+
+        private string RenameAndUpload()
+        {
+            string stamp = Path.GetFileName(TempDirectory) ?? string.Empty;
+            string tempDumpPath = Path.Combine(TempDirectory, "dump.vcd");
+            string dumpFileName = $"dump_{stamp}.vcd";          
+
+            if (!File.Exists(tempDumpPath)) return string.Empty;
+
+            string dumpFileContent = File.ReadAllText(tempDumpPath);
+            GitHubApi.PushToGit(dumpFileName, dumpFileContent, stamp);
+            return $"https://vc.drom.io/?github={GitHubApi.RepoOwner}/{GitHubApi.RepoName}/master/{dumpFileName}";
         }
     }
 }

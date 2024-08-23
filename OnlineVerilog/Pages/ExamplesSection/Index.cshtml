@@ -46,8 +46,9 @@
                 <textarea asp-for="Solution" class="txtAr" rows="17" cols="200" title="Solution Code" spellcheck="false"></textarea>
             </div>            
         </form>
-        <div class="form-group" style="margin-top: 4px">
-            <textarea class="form-control" rows="6" cols="50" disabled style="resize: none;">@ViewData["Output"]</textarea>
+        <div class="OutputSection" style="margin-top: 4px">
+            <!--<textarea class="form-control" rows="6" cols="50" disabled style="resize: none;">@ViewData["Output"]</textarea>-->
+            <p>@Html.Raw(ViewData["Output"]) <br /> @Html.Raw(ViewData["DumpFilePath"])</p>
         </div>
     </div>
 </div>

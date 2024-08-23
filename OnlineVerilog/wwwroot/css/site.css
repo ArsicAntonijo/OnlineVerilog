@@ -96,6 +96,18 @@ body {
     color: orange;
 }
 
+.OutputSection {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 25px;
+    background-color: #f0f0f0;
+}
+
+.OutputSection a {
+    font: bold;
+    color: black;
+}
+
 /* log in*/
 .logIn {
     padding: 30px;

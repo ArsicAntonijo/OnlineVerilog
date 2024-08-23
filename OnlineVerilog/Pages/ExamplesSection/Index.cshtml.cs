@@ -37,7 +37,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
                     ViewData["Testbench"] = Example.TestBench;
                     ViewData["ImagePath"] = Example.imagePath;
                 }
-                //ViewData["Solution"] = initialSolution;
+                
             }
             return Page();
         }
@@ -47,13 +47,16 @@ namespace OnlineVerilog.Pages.ExamplesSection
         public string Solution { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             string output = VerilogHelper.ValidateSolution(Solution);
             ViewData["Output"] = output;
             if (string.IsNullOrEmpty(output))
             {
-                ViewData["Output"] = _vh.ExecuteTheProcess("topmodule.v", Solution, "testbench.v", Example.TestBench);
+                (string runoutput, string dumpfilepath) = _vh.ExecuteTheProcess("topmodule.v", Solution, "testbench.v", Example.TestBench);
+
+                ViewData["Output"] = runoutput;
+                ViewData["DumpFilePath"] = $"<a href=\"{dumpfilepath}\"]\" target=\"_blank\">Кликните овде, да бисте видели визуелно промену вредности сигнала</a>";
             }
             return Page();
         }
