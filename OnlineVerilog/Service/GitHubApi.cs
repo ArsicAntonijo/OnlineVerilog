@@ -13,6 +13,8 @@ namespace OnlineVerilog.Service
         public static async void PushToGit(string FilePath, string FileContent, string CommitMessage)
         {
             var url = $"{GitHubApiUrl}/{RepoOwner}/{RepoName}/contents/{FilePath}";
+            try
+            {
             var content = new
             {
                 message = CommitMessage,
@@ -37,6 +39,8 @@ namespace OnlineVerilog.Service
                     Console.WriteLine($"Error: {responseBody}");
                 }
             }
+        }
+            catch { }            
         }
     }
 }

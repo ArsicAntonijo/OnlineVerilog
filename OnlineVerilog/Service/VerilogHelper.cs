@@ -21,16 +21,16 @@ namespace OnlineVerilog.Service
             File.WriteAllText(Path.Combine(TempDirectory, moduleFileName), modulefileContent);
             File.WriteAllText(Path.Combine(TempDirectory, testbenchFileName), testbenchFileContent);
 
-            string compileOutput = Compile(moduleFileName, testbenchFileName);
-            if (string.IsNullOrEmpty(compileOutput))
+            string output = Compile(moduleFileName, testbenchFileName);
+            string vcdromlink = string.Empty;
+            if (string.IsNullOrEmpty(output))
             {
-                string runOutput = Run();
-                string vcdromlink = RenameAndUpload();
-                return (runOutput, vcdromlink);
+                output = ProcessOutput(Run());
+                vcdromlink = RenameAndUpload();
             }
             if (Directory.Exists(TempDirectory)) { Directory.Delete(TempDirectory, true); }
 
-            return (compileOutput, string.Empty);
+            return (output, vcdromlink);
         }
 
         private string Compile(string moduleFileName, string testbenchFileName)
@@ -89,6 +89,12 @@ namespace OnlineVerilog.Service
             string dumpFileContent = File.ReadAllText(tempDumpPath);
             GitHubApi.PushToGit(dumpFileName, dumpFileContent, stamp);
             return $"https://vc.drom.io/?github={GitHubApi.RepoOwner}/{GitHubApi.RepoName}/master/{dumpFileName}";
+        }
+
+        private string ProcessOutput(string v)
+        {
+
+            return v;
         }
     }
 }
