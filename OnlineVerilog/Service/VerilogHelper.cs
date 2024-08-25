@@ -93,8 +93,18 @@ namespace OnlineVerilog.Service
 
         private string ProcessOutput(string v)
         {
+            int failedTests = 0;
+            var e = new Regex("\\sFAIL\\s+(?<expected>\\w+)\\s+-\\s+(?<inputs>\\w+)").Matches(v);
+            if (e.Count == 0) return "Задатак је успешно решен :)";
 
-            return v;
+            string output = string.Empty;
+            foreach (Match m in e)
+            {
+                output += string.Format(" * Ако на улаз имамо: {1} на излазу треда да се добије {0}\r\n", m.Groups["expected"].Value, m.Groups["inputs"]);
+                failedTests++;
+            }
+            output = "Код је пао на " + failedTests + " ситуацијама:\r\n" + output;
+            return output;
         }
     }
 }

@@ -15,31 +15,31 @@ namespace OnlineVerilog.Service
             var url = $"{GitHubApiUrl}/{RepoOwner}/{RepoName}/contents/{FilePath}";
             try
             {
-            var content = new
-            {
-                message = CommitMessage,
-                content = Convert.ToBase64String(Encoding.UTF8.GetBytes(FileContent))
-            };
-
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; MyApp/1.0)");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", GitHubToken);
-
-                var requestBody = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
-                var response = await httpClient.PutAsync(url, requestBody);
-
-                if (response.IsSuccessStatusCode)
+                var content = new
                 {
-                    Console.WriteLine("File pushed successfully.");
-                }
-                else
+                    message = CommitMessage,
+                    content = Convert.ToBase64String(Encoding.UTF8.GetBytes(FileContent))
+                };
+
+                using (var httpClient = new HttpClient())
                 {
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Error: {responseBody}");
+                    httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; MyApp/1.0)");
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", GitHubToken);
+
+                    var requestBody = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+                    var response = await httpClient.PutAsync(url, requestBody);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("File pushed successfully.");
+                    }
+                    else
+                    {
+                        var responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Error: {responseBody}");
+                    }
                 }
             }
-        }
             catch { }            
         }
     }

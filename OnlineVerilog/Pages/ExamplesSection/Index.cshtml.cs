@@ -55,8 +55,11 @@ namespace OnlineVerilog.Pages.ExamplesSection
             {
                 (string runoutput, string dumpfilepath) = _vh.ExecuteTheProcess("topmodule.v", Solution, "testbench.v", Example.TestBench);
 
-                ViewData["Output"] = runoutput;
-                ViewData["DumpFilePath"] = $"<a href=\"{dumpfilepath}\"]\" target=\"_blank\">Кликните овде, да бисте видели визуелно промену вредности сигнала</a>";
+                ViewData["Output"] = Converting.StringToHtml(runoutput);
+                if (!string.IsNullOrEmpty(dumpfilepath))
+                {
+                    ViewData["DumpFilePath"] = $"<a href=\"{dumpfilepath}\"]\" target=\"_blank\">Кликните овде, да бисте видели визуелно промену вредности коришћених сигнала.</a>";
+                }
             }
             return Page();
         }
