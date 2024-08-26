@@ -11,8 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession();
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<VerilogHelper>();
-//builder.Services.AddDbContext<VeronContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnectionString")));
-builder.Services.AddDbContext<VeronContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+builder.Services.AddDbContext<VeronContext>(
+    options => options.UseMySql("",
+    new MySqlServerVersion(new Version(8, 0, 28))));
+//builder.Services.AddDbContext<VeronContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 builder.Services.AddDefaultIdentity<User>(options =>
     {
@@ -43,6 +45,11 @@ app.UseDeveloperExceptionPage();
 //    var salesContext = scope.ServiceProvider.GetRequiredService<VeronContext>();
 //    salesContext.Database.EnsureCreated();
 //}
+using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetRequiredService<VeronContext>();
+    context.Database.Migrate();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
