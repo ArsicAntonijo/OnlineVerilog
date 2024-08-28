@@ -12,7 +12,7 @@ namespace OnlineVerilog.Service
         {
             if (!Directory.Exists(WorkingDirectory)) { Directory.CreateDirectory(WorkingDirectory); }           
         }
-        public (string, string) ExecuteTheProcess(string moduleFileName, string modulefileContent, string testbenchFileName, string testbenchFileContent)
+        public (string, string, bool) ExecuteTheProcess(string moduleFileName, string modulefileContent, string testbenchFileName, string testbenchFileContent)
         {
             TempDirectory = Path.Combine(WorkingDirectory, DateTime.Now.ToString("yyMMddHHmmfffffff"));
 
@@ -23,14 +23,15 @@ namespace OnlineVerilog.Service
 
             string output = Compile(moduleFileName, testbenchFileName);
             string vcdromlink = string.Empty;
+            bool status = false;
             if (string.IsNullOrEmpty(output))
             {
-                output = ProcessOutput(Run());
+                (output, status) = ProcessOutput(Run());
                 vcdromlink = RenameAndUpload();
             }
             if (Directory.Exists(TempDirectory)) { Directory.Delete(TempDirectory, true); }
 
-            return (output, vcdromlink);
+            return (output, vcdromlink, status);
         }
 
         private string Compile(string moduleFileName, string testbenchFileName)
@@ -91,11 +92,11 @@ namespace OnlineVerilog.Service
             return $"https://vc.drom.io/?github={GitHubApi.RepoOwner}/{GitHubApi.RepoName}/master/{dumpFileName}";
         }
 
-        private string ProcessOutput(string v)
+        private (string, bool) ProcessOutput(string v)
         {
             int failedTests = 0;
             var e = new Regex("\\sFAIL\\s+(?<expected>\\w+)\\s+-\\s+(?<inputs>\\w+)").Matches(v);
-            if (e.Count == 0) return "Задатак је успешно решен :)";
+            if (e.Count == 0) return ("Задатак је успешно решен :)", true);
 
             string output = string.Empty;
             foreach (Match m in e)
@@ -104,7 +105,7 @@ namespace OnlineVerilog.Service
                 failedTests++;
             }
             output = "Код је пао на " + failedTests + " ситуацијама:\r\n" + output;
-            return output;
+            return (output, false);
         }
     }
 }

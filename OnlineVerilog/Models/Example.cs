@@ -8,5 +8,6 @@
         public string Body { get; set; }
         public string TestBench { get; set; }
         public string imagePath { get; set; } = string.Empty;
+        public ICollection<SolvedExample>? SolvedByUsers { get; set; } //= new List<User>();
     }
 }

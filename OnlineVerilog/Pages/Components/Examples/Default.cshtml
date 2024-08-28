@@ -13,7 +13,14 @@
             <ol id="@distinctSection" class="list-unstyled" style="margin-left: 15px;">
                 @foreach (var header in headers)
                 {
-                    <li><a href="/ExamplesSection/@header.Id" style="text-decoration: none;"> @header.Header</a></li>
+                    if (header.SolvedByUsers != null)
+                    {
+                        <li><i class="fa fa-check green-tick"></i> <a href="/ExamplesSection/@header.Id" style="text-decoration: none;"> @header.Header</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/ExamplesSection/@header.Id" style="text-decoration: none;"> @header.Header</a></li>                        
+                    }
                 }
             </ol>
         }

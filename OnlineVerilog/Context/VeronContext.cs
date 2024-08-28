@@ -12,16 +12,24 @@ namespace OnlineVerilog.Context
 
        // public DbSet<User> Users { get; set; }
         public DbSet<Example> Examples { get; set; }
+        public DbSet<SolvedExample> SolvedExamples { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            var admin = new IdentityRole("admin");
-            admin.NormalizedName = "admin";
+            builder.Entity<SolvedExample>()
+                .HasKey(s => new { s.UserId, s.ExampleId });
 
-            var client = new IdentityRole("client");
-            client.NormalizedName = "client";
+            builder.Entity<SolvedExample>()
+                .HasOne(s => s.SolvedByUser)
+                .WithMany(u => u.SolvedExamples)
+                .HasForeignKey(s => s.UserId);                
+                
+            builder.Entity<SolvedExample>()
+                .HasOne(s => s.Example)
+                .WithMany(e => e.SolvedByUsers)
+                .HasForeignKey(s => s.ExampleId);
 
             builder.Entity<IdentityRole>().HasData(admin, client);
         }

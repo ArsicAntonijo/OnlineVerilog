@@ -3,35 +3,35 @@ module testbench;
   wire y;
 
   //Design Instance
-  jinverter jinv(y,a);
+  topmodule jinv(y,a);
   
 	initial
 	begin
-		$display ("RESULT\ta\ty");
+		$display ("RESULT\ta\s-\sy");
 
 		a = 1; # 100; // Another value
 		if ( y == 0 ) // Test for inversion
-			$display ("  PASS  \t%d\t%d",a,y);
+			$display ("  PASS  \t%d - %d",a,y);
 		else
-			$display ("  FAIL \t%d\t%d",a,y);
+			$display ("  FAIL \t%d - %d",a,y);
 
 		a = 0; # 100; // Initial value is set
 		if ( y == 1 ) // Test for inversion
-			$display ("  PASS  \t%d\t%d",a,y);
+			$display ("  PASS  \t%d - %d",a,y);
 		else
-			$display ("  FAIL  \t%d\t%d",a,y);
+			$display ("  FAIL  \t%d - %d",a,y);
 
 		a = 1; # 50; // Another value
 		if ( y == 0 ) // Test for inversion
-			$display ("  PASS  \t%d\t%d",a,y);
+			$display ("  PASS  \t%d - %d",a,y);
 		else
-			$display ("  FAIL  \t%d\t%d",a,y);
+			$display ("  FAIL  \t%d - %d",a,y);
 
 		a = 0; # 100; // Initial value is set
 		if ( y == 1 ) // Test for inversion
-			$display ("  PASS  \t%d\t%d",a,y);
+			$display ("  PASS  \t%d - %d",a,y);
 		else
-			$display ("  FAIL  \t%d\t%d",a,y);
+			$display ("  FAIL  \t%d - %d",a,y);
 
 	end
 	  

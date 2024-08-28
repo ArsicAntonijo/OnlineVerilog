@@ -1,0 +1,46 @@
+﻿@page
+@model OnlineVerilog.Pages.DashboardModel
+@{
+}
+
+<div class="blueColor">
+
+    
+</div>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="blueColor">
+            <h1>Ранг листа</h1>
+            <p><a asp-page="Index">Врати се на почетну страну</a></p>
+            <hr />
+        </div>
+        <table class="table ToMiddle">
+            <thead>
+                <tr>
+                    <th>Корисник</th>
+                    <th>Број решених задатака</th>
+                    <th>Укупан број задатака</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ModifiedExamples)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SolvedExamples)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalExamples)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
