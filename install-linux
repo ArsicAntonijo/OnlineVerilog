@@ -1,0 +1,2 @@
+sudo snap install dotnet-sdk
+sudo apt-get install iverilog

@@ -1,0 +1,34 @@
+# build image
+docker build -t onlineverilogdck4 .
+
+# run docker image
+docker run -p 8080:8080 onlineverilogdck4:latest
+
+#list running containers
+docker ps -a
+
+# go in container with bash
+docker exec -it e335efa40e20 bash  
+
+#list all images
+docker images
+
+#add tag for the image
+docker tag dockertest:latest tonkac/docker-test-repo:latest
+
+# push image to docker registry
+docker push tonkac/docker-test-repo:latest
+
+
+
+
+# example docker-compose.yml
+
+  sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sql_server2022
+    ports: # not actually needed, because the two services are on the same network
+      - "1433:1433" 
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=1111
