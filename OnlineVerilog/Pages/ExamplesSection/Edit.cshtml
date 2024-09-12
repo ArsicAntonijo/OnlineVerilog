@@ -11,9 +11,10 @@
     <div class="col-md-6">
         <h2 class="blueColor">Измене задатака</h2>
         <hr />
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Example.Id" />
+            <input type="hidden" asp-for="Example.imagePath" />
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label asp-for="Example.Section" class="control-label">Секција</label>
@@ -30,6 +31,10 @@
                 <label asp-for="Example.Body" class="control-label">Опис</label>
                 <textarea asp-for="Example.Body" class="form-control" rows="4" cols="50"></textarea>
                 <span asp-validation-for="Example.Body" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" asp-for="Upload" />
             </div>
             <div class="form-group">
                 <label asp-for="Example.TestBench" class="control-label">Тестбенч</label>

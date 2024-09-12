@@ -22,6 +22,8 @@ namespace OnlineVerilog.Pages.ExamplesSection
 
         [BindProperty]
         public Example Example { get; set; } = default!;
+        [BindProperty]
+        public IFormFile? Upload { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -46,6 +48,20 @@ namespace OnlineVerilog.Pages.ExamplesSection
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+            if (Upload != null)
+            {
+                try
+                {
+                    var file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", Upload.FileName);
+                    if (!Directory.Exists(Path.GetDirectoryName(file))) Directory.CreateDirectory(Path.GetDirectoryName(file));
+                    using (var fileStream = new FileStream(file, FileMode.Create))
+                    {
+                        await Upload.CopyToAsync(fileStream);
+                    }
+                    Example.imagePath = "/uploads/" + Upload.FileName;
+                }
+                catch (Exception) { }
             }
 
             _context.Attach(Example).State = EntityState.Modified;
