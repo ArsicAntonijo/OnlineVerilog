@@ -11,9 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession();
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<VerilogHelper>();
-builder.Services.AddDbContext<VeronContext>(
-    options => options.UseMySql("",
-    new MySqlServerVersion(new Version(8, 0, 28))));
+builder.Services.AddDbContext<VeronContext>(options => options.UseSqlite("Data Source=app.db"));
+/*builder.Services.AddDbContext<VeronContext>(
+    options => options.UseMySql("server=localhost;database=VeronDb;user=root;password=",
+    new MySqlServerVersion(new Version(8, 0, 39))));*/
 //builder.Services.AddDbContext<VeronContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 builder.Services.AddDefaultIdentity<User>(options =>
@@ -48,7 +49,7 @@ app.UseDeveloperExceptionPage();
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<VeronContext>();
-    context.Database.Migrate();
+    await context.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
@@ -60,6 +61,6 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.Urls.Add("http://0.0.0.0:5000");
+//app.Urls.Add("http://0.0.0.0:5000");
 
 app.Run();

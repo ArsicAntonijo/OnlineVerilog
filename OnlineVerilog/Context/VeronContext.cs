@@ -31,7 +31,8 @@ namespace OnlineVerilog.Context
                 .WithMany(e => e.SolvedByUsers)
                 .HasForeignKey(s => s.ExampleId);
 
-            builder.Entity<IdentityRole>().HasData(admin, client);
+            SeedData.Seed(builder);
+            
         }
     }
 }
