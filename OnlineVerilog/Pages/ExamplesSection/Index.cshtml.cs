@@ -32,14 +32,14 @@ namespace OnlineVerilog.Pages.ExamplesSection
             {
                 int Id = int.Parse(id);
                 Example = _context.Examples.Where(e => e.Id == Id).FirstOrDefault();
-                if (Example != null)
+               /* if (Example != null)
                 {
                     ViewData["Header"] = Example.Header;
                     ViewData["Section"] = Example.Section;
                     ViewData["Body"] = Converting.StringToHtml(Example.Body);
                     ViewData["Testbench"] = Example.TestBench;
                     ViewData["ImagePath"] = Example.imagePath;
-                }
+                }*/
                 
             }
             return Page();
