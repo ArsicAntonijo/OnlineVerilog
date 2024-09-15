@@ -4,12 +4,12 @@
     //Model.GroupBy(p => p.Section).Distinct().ToList();
 }
 <div id="exampleList">
-    <h3 style="color:cornflowerblue">Задаци</h3>
+    <h3 style="color:cornflowerblue"><b>Задаци</b></h3>
     <ul class="list-unstyled" style="color:cornflowerblue">
         @foreach (var distinctSection in distinctSections)
         {
             var headers = Model.Where(p => p.Section == distinctSection).ToList();
-            <li><a href="#" onclick="hideList('@distinctSection')" style="text-decoration: none;">@distinctSection</a></li>
+            <li><a href="#" onclick="hideList('@distinctSection')" style="text-decoration: none;"><b>@distinctSection</b></a></li>
             <ol id="@distinctSection" class="list-unstyled" style="margin-left: 15px;">
                 @foreach (var header in headers)
                 {
@@ -26,16 +26,3 @@
         }
     </ul>
 </div>
-
-
-<script>
-    function hideList(id) {
-        var myList = document.getElementById(id);
-
-        if (myList.style.display === "none") {
-            myList.style.display = "block";
-        } else {
-            myList.style.display = "none";
-        }
-    }
-</script>

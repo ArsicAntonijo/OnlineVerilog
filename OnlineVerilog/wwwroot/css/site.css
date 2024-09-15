@@ -36,7 +36,14 @@ body {
     text-align: center;
 }
 
-.main-panel {
+.mainPanel {
+    background-color: aliceblue;
+    margin-top: -15px;
+    padding: 20px;
+    height: 100%;
+}
+
+.editor-header {
     border: 1px solid grey;
     color: aliceblue;
     background-color: dimgrey;

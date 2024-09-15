@@ -6,16 +6,9 @@
     var a = @ViewData["Solution"];
 }
 
+<div class="row">
 
-<div id="vericalNav"style="float: left; width: 15%;">
-    <div style="float:right;">
-        <button id="nsbtn" class="btn btn-outline-primary" onclick="hideShow()"><i class="fa fa-angle-double-left"></i></button>
-    </div>
-    @await Component.InvokeAsync("Examples")
-</div>
-
-<div id="mainPanel" class="row" style="float: right; width: 85%; background-color: aliceblue; margin-top: -15px; padding: 20px; height: 100%">
-    <div class="col-md-12" >        
+    <div id="mainPanel" class="col-md-10 mainPanel">           
         <h4 class="blueColor">@Model.Example.Header</h4>
         <hr />
         <p>@Html.Raw(@Model.Example.Body)</p>
@@ -35,7 +28,7 @@
                 <input type="hidden" asp-for="Example.Body" value="@Model.Example.Body" />
             </div>
             
-            <div class="main-panel">
+            <div class="editor-header">
                 <div style="float: left; margin: 10px 0 0 10px;">
                     <h6>Унеси овде своје решење</h6>
                 </div>
@@ -54,6 +47,17 @@
         <div class="OutputSection" style="margin-top: 4px">
             <!--<textarea class="form-control" rows="6" cols="50" disabled style="resize: none;">@ViewData["Output"]</textarea>-->
             <p>@Html.Raw(ViewData["Output"]) <br /> @Html.Raw(ViewData["DumpFilePath"])</p>
+        </div>
+        <br />
+        <hr />
+    </div>
+    <div id="vericalNav" class="col-md-2">
+        <!--<div style="float:right;">
+            <button id="nsbtn" class="btn btn-outline-primary" onclick="hideShow()"><i class="fa fa-angle-double-left"></i></button>
+        </div>-->
+        <br />  
+        <div style="text-align: center">
+            @await Component.InvokeAsync("Examples")
         </div>
     </div>
 </div>
