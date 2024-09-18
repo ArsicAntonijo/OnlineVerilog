@@ -1,0 +1,23 @@
+﻿@page
+@model OnlineVerilog.Pages.ExamplesSection.DeleteModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="row ">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 register">
+        <h2 class="blueColor">Дали сигурно хоћете да обришете задатак?</h2>
+        <br />
+        <form method="post">
+            <input type="hidden" asp-for="Id" />            
+            <div class="form-group newExamplebutton">
+                <input type="submit" value="Обриши" class="btn btn-danger" />
+                <a asp-page="./List" style="margin-left: 30px;">Врати се на листи задатака</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>

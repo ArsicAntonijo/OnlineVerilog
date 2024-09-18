@@ -32,6 +32,10 @@ namespace OnlineVerilog.Pages.ExamplesSection
             {
                 int Id = int.Parse(id);
                 Example = _context.Examples.Where(e => e.Id == Id).FirstOrDefault();
+                if (Example == null)
+                {
+                    return NotFound();
+                }
                /* if (Example != null)
                 {
                     ViewData["Header"] = Example.Header;
@@ -42,6 +46,8 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 }*/
                 
             }
+            //ViewData["Output"] = "All tests passed!<br />All tests passed!<br />All tests passed!<br />All tests passed!<br />All tests passed!";
+            //ViewData["DumpFilePath"] = "<a href=\"https://vc.drom.io/?github=ArsicAntonijo/Test/main/dump.vcd\"]\" target=\"_blank\">Click here to see the wave form</a>";
             return Page();
         }
         [BindProperty]
@@ -65,9 +71,13 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 }
                 if (status && User.Identity.IsAuthenticated)
                 {
-                    string userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
-                    _context.SolvedExamples.Add(new SolvedExample() { ExampleId = Example.Id, UserId = userId });
-                    await _context.SaveChangesAsync();
+                    try
+                    {
+                        string userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
+                        _context.SolvedExamples.Add(new SolvedExample() { ExampleId = Example.Id, UserId = userId });
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception) { }
                 }
             }
             return Page();
