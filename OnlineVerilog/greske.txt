@@ -1,0 +1,155 @@
+zica
+
+module topmodule(input a, output y);
+	assign y = a;
+endmodule
+
+testbench.v:6: error: reg a; cannot be driven by primitives or continuous assignment.
+testbench.v:6: error: Output port expression must support continuous assignment.
+testbench.v:6: : Port 2 (y) of topmodule is connected to a
+2 error(s) during elaboration.
+
+*****************************************************
+ne kolo
+
+module topmodule(input a, b, outupt y);
+	assign y = a & b;
+endmodule
+
+testbench.v:12: syntax error
+testbench.v:12: error: malformed statement
+testbench.v:18: syntax error
+testbench.v:18: error: malformed statement
+testbench.v:24: syntax error
+testbench.v:24: error: malformed statement
+testbench.v:30: syntax error
+testbench.v:30: error: malformed statement
+topmodule.v:1: syntax error
+topmodule.v:1: Errors in port declarations.
+****************************************************
+
+testbench.v:6: error: Unknown module type: topmodule
+3 error(s) during elaboration.
+*** These modules were missing:
+topmodule referenced 1 times.
+***
+
+****************************************************
+mux 16bit
+module topmodule(
+    input [15:0] a, b,
+    input sel,
+    output [15:0] out );
+	assign out = sel?b:a;
+endmodulea
+
+topmodule.v:2: syntax error
+I give up.
+
+****************************************************
+mux 4-1
+
+module topmodule( 
+    input a, b, c, d,
+    input [1:0] sel,
+    output out );
+  
+    always @ * begin
+  
+        case (sel)
+            3 : out = a;
+            2 : out = b;
+            1 : out = c;
+            0 : out = d;
+            default : out = 0;
+        endcase
+    end
+
+endmodule 
+
+topmodule.v:9: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:10: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:11: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:12: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:13: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+5 error(s) during elaboration.
+*****************************************************************
+mux 4-1 
+
+module topmodule( 
+    input[2:0] a, b, c, d,
+    input [1:0] sel,
+    output[2:0] out );
+    
+        case (sel)
+            3 : assign out = a;
+            2 : assign out = b;
+            1 : assign out = c;
+            0 : assign out = d; 
+        endcase
+
+endmodule  
+
+topmodule.v:6: error: Unable to bind parameter `sel' in `testbench.tm'
+topmodule.v:6: error: Cannot evaluate genvar case expression: sel
+2 error(s) during elaboration.
+***************************************************************
+mux 4-1 
+
+module topmodule( 
+    input[2:0] a, b, c, d,
+    input [1:0] sel,
+    output [2:0] out );
+
+always @ * begin
+  
+        case (sel)
+            2'b00 : out = a; 
+            2'b01 : out = b;
+            2'b10 : out = c;
+            2'b11 : out = d;
+            default : out = {3{1'b1}};
+        endcase
+    end
+endmodule  
+
+topmodule.v:9: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:10: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:11: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:12: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+topmodule.v:13: error: out is not a valid l-value in testbench.tm.
+topmodule.v:4: : out is declared here as wire.
+5 error(s) during elaboration.
+*****************************************************************
+prosirivanje
+
+module topmodule( 
+    input [7:0] in,
+    output [32:0] out
+);
+    assign out = { {24{in[7]}} , in[7:0] };
+endmodule
+
+testbench.v:6: warning: Port 2 (out) of topmodule expects 33 bits, got 32.
+testbench.v:6: : Padding 1 high bits of the port.
+*****************************************************************
+dvobitno poredjenje
+
+module topmodule(input [1:0] a, b, output y);
+ assign y = (a == b);
+endmodule
+
+testbench.v:6: error: Wrong number of ports. Expecting 3, got 4.
+1 error(s) during elaboration.
+*****************************************************************
+tastatura
+fali mi dump file output
