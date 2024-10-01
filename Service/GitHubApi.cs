@@ -40,7 +40,7 @@ namespace OnlineVerilog.Service
                     }
                 }
             }
-            catch { }            
+            catch(Exception ex) { Console.WriteLine($"Error uploading to git: {ex.Message}"); }            
         }
     }
 }

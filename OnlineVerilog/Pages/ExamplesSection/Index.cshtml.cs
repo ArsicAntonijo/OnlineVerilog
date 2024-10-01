@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,14 +15,14 @@ namespace OnlineVerilog.Pages.ExamplesSection
 {
     public class IndexModel : PageModel
     {
-        private readonly OnlineVerilog.Context.VeronContext _context;
+        private readonly IVeronRepository _repo;
         private readonly OnlineVerilog.Service.VerilogHelper _vh;
         private readonly UserManager<User> _userManager;
         private readonly string initialSolution = "module topmodule;\r\rendmodule\r";
 
-        public IndexModel(OnlineVerilog.Context.VeronContext context, Service.VerilogHelper vh, UserManager<User> um)
+        public IndexModel(IVeronRepository vr, Service.VerilogHelper vh, UserManager<User> um)
         {
-            _context = context;
+            _repo = vr;
             _vh = vh;
             _userManager = um;
         }
@@ -31,23 +32,13 @@ namespace OnlineVerilog.Pages.ExamplesSection
             if (!string.IsNullOrEmpty(id))
             {
                 int Id = int.Parse(id);
-                Example = _context.Examples.Where(e => e.Id == Id).FirstOrDefault();
+                Example = _repo.GetExample(Id);
                 if (Example == null)
                 {
                     return NotFound();
                 }
-               /* if (Example != null)
-                {
-                    ViewData["Header"] = Example.Header;
-                    ViewData["Section"] = Example.Section;
-                    ViewData["Body"] = Converting.StringToHtml(Example.Body);
-                    ViewData["Testbench"] = Example.TestBench;
-                    ViewData["ImagePath"] = Example.imagePath;
-                }*/
                 
             }
-            //ViewData["Output"] = "All tests passed!<br />All tests passed!<br />All tests passed!<br />All tests passed!<br />All tests passed!";
-            //ViewData["DumpFilePath"] = "<a href=\"https://vc.drom.io/?github=ArsicAntonijo/Test/main/dump.vcd\"]\" target=\"_blank\">Click here to see the wave form</a>";
             return Page();
         }
         [BindProperty]
@@ -74,8 +65,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
                     try
                     {
                         string userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
-                        _context.SolvedExamples.Add(new SolvedExample() { ExampleId = Example.Id, UserId = userId });
-                        await _context.SaveChangesAsync();
+                        _repo.AddSolvedExample(new SolvedExample() { ExampleId = Example.Id, UserId = userId });
                     }
                     catch (Exception) { }
                 }

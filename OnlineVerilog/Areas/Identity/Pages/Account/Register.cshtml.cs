@@ -127,7 +127,7 @@ namespace OnlineVerilog.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User succesfully added!");
 
-                    await _userManager.AddToRoleAsync(user, "client");
+                    await _userManager.AddToRoleAsync(user, "USER");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);

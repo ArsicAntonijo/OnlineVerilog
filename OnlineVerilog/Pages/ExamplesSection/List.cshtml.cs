@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +13,18 @@ namespace OnlineVerilog.Pages.ExamplesSection
 {
     public class ListModel : PageModel
     {
-        private readonly OnlineVerilog.Context.VeronContext _context;
+        private readonly IVeronRepository _repo;
 
-        public ListModel(OnlineVerilog.Context.VeronContext context)
+        public ListModel(IVeronRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public IList<Example> Example { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Example = await _context.Examples.ToListAsync();
+            Example = _repo.GetExamples(); 
         }
     }
 }
