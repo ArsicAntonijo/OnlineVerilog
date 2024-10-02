@@ -1,0 +1,63 @@
+﻿
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <a href="0" style="float: right">Синтакса</a>
+        <br />
+        <h1 class="naslov">Покретање првог задатка</h1>
+        <br />
+        <hr />
+        <br />
+        <h3 class="naslov">Инсталација</h3>
+        <p>Icarus Verilog је отворени алат за симулацију Верилог-а. Можете га преузети са званичног сајта:</p>
+        <ul>
+            <li><a href="http://iverilog.icarus.com/">Icarus Verilog - званични сајт</a></li>
+        </ul>
+        <p>Постоје различите верзије за Windows, Linux и macOS. Изаберите верзију која одговара вашем оперативном систему и пратите упутства за инсталацију.</p>
+        <br />
+        <hr />
+        <br />
+        <h3 class="naslov">Пример верилог кода</h3>
+        <p>Eво једноставног примера верилог модула који имплементира и логичку функцију:</p>
+<pre><code>module AND_gate (
+    input a,
+    input b,
+    output y
+);
+    assign y = a & b; // Логичко AND
+endmodule</code></pre>
+        <br />
+        <hr />
+        <br />
+        <h3 class="naslov">Компајлирање кода</h3>
+        <p>Да бисте компајлирали код, отворите терминал (команд промпт) и одрадите следеће кораке:</p>
+        <ol>
+            <li>Сачувајте свој верилог код у датотеку под именом <code>and_gate.v</code>.</li>
+            <li>Пређите у директоријум где се датотека налази:</li>
+            <pre><code>cd путања_до_директоријума</code></pre>
+            <li>Компајлирајте код користећи Icarus Verilog:</li>
+            <pre><code>iverilog -o and_gatе and_gate.v</code></pre>
+            <p>Ова команда ће генерисати извршну датотеку под именом <code>and_gate</code>.</p>
+        </ol>
+        <br />
+        <hr />
+        <br />
+        <h3 class="naslov">Покретање Симулације</h3>
+        <p>Након компајлирања, можете покренути симулацију следећом командом:</p>
+<pre><code>vvp and_gate</code></pre>
+        <p>Ово ће извршити симулацију вашег верилог кода. У зависности од вашег кода, можда ћете хтети да додате тестни модул како бисте проверили исправност излаза.</p>
+        <br />
+        <hr />
+        <br />
+        <h3 class="naslov">Додатне Информације</h3>
+        <p>За додатне информације и документацију, можете посетити:</p>
+        <ul>
+            <li><a href="http://iverilog.icarus.com/">Icarus Verilog - документација</a></li>
+            <li><a href="https://www.chipsalliance.org/technical-chapters/iverilog/">Chips Alliance - Icarus Verilog</a></li>
+        </ul>
+
+        <a href="0" style="float: right">Синтакса</a>
+    </div>
+    <div class="col-md-2"></div>
+</div>

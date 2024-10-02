@@ -5,10 +5,19 @@
 <div class="row" style="margin-top: 50px; color:cornflowerblue">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <h3>Добродошли на Верон сајт</h3>
-        <p>Уколико желите да научите верилог испод можете наћи листу задатака за вежбање.</p>
+        <div class="ToMiddle">
+            <img src="~/verilog.png" />
+            <h3>Добродошли на Верон сајт</h3>
+            <br />
+            <p>
+                <a href="/ExamplesSection/1">Одради први задатак</a> &ensp;&ensp;&ensp;&ensp;
+                <a href="/Lessons/0">Пролистај лекције</a>
+            </p>
+            
+        </div>
+        @* <p>Уколико желите да научите верилог испод можете наћи листу задатака за вежбање.</p>
         @await Component.InvokeAsync("Examples")
-
+ *@
     </div>
     <div class="col-md-3"></div>
 </div>

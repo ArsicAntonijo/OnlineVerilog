@@ -1,0 +1,11 @@
+﻿@page "{id:int}"
+@model OnlineVerilog.Pages.Lessons.IndexModel
+
+@if (Model.Id == 0)
+{
+    <partial name="_PartialSintax" />
+}
+else
+{
+    <partial name="_PartialCompile" />
+}
