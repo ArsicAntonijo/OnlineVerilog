@@ -5,13 +5,14 @@ using OnlineVerilog.Service;
 using OnlineVerilog.Models;
 using OnlineVerilog.Context;
 using Data.Repositories;
+using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSession();
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<VerilogHelper>();
+builder.Services.AddTransient<IVerilog, VerilogHelper>();
 builder.Services.AddTransient<IVeronRepository, VeronRepository>();
 builder.Services.AddDbContext<VeronContext>(options => options.UseSqlite("Data Source=app.db"));
 /*builder.Services.AddDbContext<VeronContext>(

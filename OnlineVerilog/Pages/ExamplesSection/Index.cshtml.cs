@@ -10,17 +10,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineVerilog.Context;
 using OnlineVerilog.Models;
 using OnlineVerilog.Service;
+using Service;
 
 namespace OnlineVerilog.Pages.ExamplesSection
 {
     public class IndexModel : PageModel
     {
         private readonly IVeronRepository _repo;
-        private readonly OnlineVerilog.Service.VerilogHelper _vh;
+        private readonly IVerilog _vh;
         private readonly UserManager<User> _userManager;
         private readonly string initialSolution = "module topmodule;\r\rendmodule\r";
 
-        public IndexModel(IVeronRepository vr, Service.VerilogHelper vh, UserManager<User> um)
+        public IndexModel(IVeronRepository vr, IVerilog vh, UserManager<User> um)
         {
             _repo = vr;
             _vh = vh;

@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using Service;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace OnlineVerilog.Service
 {
-    public class VerilogHelper
+    public class VerilogHelper : IVerilog
     {
         private readonly static string WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Env");
         private string TempDirectory = string.Empty;
@@ -21,9 +22,9 @@ namespace OnlineVerilog.Service
             File.WriteAllText(Path.Combine(TempDirectory, moduleFileName), modulefileContent);
             File.WriteAllText(Path.Combine(TempDirectory, testbenchFileName), testbenchFileContent);
 
-            string output = Compile(moduleFileName, testbenchFileName);
             string vcdromlink = string.Empty;
             bool status = false;
+            string output = Compile(moduleFileName, testbenchFileName);
             if (string.IsNullOrEmpty(output))
             {
                 (output, status) = ProcessOutput(Run());
