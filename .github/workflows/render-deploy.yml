@@ -6,6 +6,22 @@ on:
       - master
 
 jobs:
+  build-and-push:
+    name: Run docker build and push image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tonkac" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t tonkac/veron:latest .
+
+      - name: Push Docker image
+        run: docker push tonkac/veron:latest
   deploy:
     runs-on: ubuntu-latest
     steps:
