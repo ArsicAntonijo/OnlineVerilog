@@ -7,7 +7,8 @@
     <UserSecretsId>ad85b1dd-1514-410e-80c7-b7a558acb753</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
+<!--
+	<ItemGroup>
     <None Remove="app.db" />
   </ItemGroup>
 
@@ -15,7 +16,7 @@
     <Content Include="app.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.5" />
