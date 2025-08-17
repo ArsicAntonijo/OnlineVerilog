@@ -27,7 +27,7 @@ namespace OnlineVerilog.Models
                     Email = "admin@gmail.com",
                     NormalizedEmail = "ADMIN@GMAIL.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, ""),
+                    PasswordHash = hasher.HashPassword(null, $"{Environment.GetEnvironmentVariable("adminpass")}"),
                     SecurityStamp = Guid.NewGuid().ToString()
                 },
                 new User()
@@ -39,7 +39,7 @@ namespace OnlineVerilog.Models
                     Email = "toni@gmail.com",
                     NormalizedEmail = "TONI@GMAIL.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, ""),
+                    PasswordHash = hasher.HashPassword(null, $"{Environment.GetEnvironmentVariable("userpass")}"),
                     SecurityStamp = Guid.NewGuid().ToString()
                 });
 

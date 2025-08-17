@@ -6,7 +6,7 @@ namespace OnlineVerilog.Service
     public static class GitHubApi
     {
         public static string GitHubApiUrl = "https://api.github.com/repos";
-        public static string GitHubToken = "";
+        public static string GitHubToken = $"{Environment.GetEnvironmentVariable("githubtoken")}";
         public static string RepoOwner = "ArsicAntonijo";
         public static string RepoName = "VeronDumpRepo";
 
