@@ -10,7 +10,6 @@ namespace OnlineVerilog.Context
         public VeronContext(DbContextOptions<VeronContext> options)
             : base(options) { }
 
-       // public DbSet<User> Users { get; set; }
         public DbSet<Example> Examples { get; set; }
         public DbSet<SolvedExample> SolvedExamples { get; set; }
 

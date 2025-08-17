@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,11 +15,11 @@ namespace OnlineVerilog.Pages.ExamplesSection
     [Authorize(Roles = "admin")]
     public class CreateModel : PageModel
     {
-        private readonly OnlineVerilog.Context.VeronContext _context;
+        private readonly IVeronRepository _repo;
 
-        public CreateModel(OnlineVerilog.Context.VeronContext context)
+        public CreateModel(IVeronRepository vr)
         {
-            _context = context;
+            _repo = vr;
         }
 
         public IActionResult OnGet()
@@ -52,8 +53,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 }                
             }
             catch(Exception ex) { }
-            _context.Examples.Add(Example);
-            await _context.SaveChangesAsync();
+            _repo.AddNewExample(Example);            
 
             return RedirectToPage("../Index");
         }

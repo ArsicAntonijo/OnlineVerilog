@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,11 +14,11 @@ namespace OnlineVerilog.Pages.ExamplesSection
 {
     public class EditModel : PageModel
     {
-        private readonly OnlineVerilog.Context.VeronContext _context;
+        private readonly IVeronRepository _repo;
 
-        public EditModel(OnlineVerilog.Context.VeronContext context)
+        public EditModel(IVeronRepository vr)
         {
-            _context = context;
+            _repo = vr;
         }
 
         [BindProperty]
@@ -32,7 +33,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 return NotFound();
             }
 
-            var example =  await _context.Examples.FirstOrDefaultAsync(m => m.Id == id);
+            var example = _repo.GetExample(id);  
             if (example == null)
             {
                 return NotFound();
@@ -64,30 +65,17 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 catch (Exception) { }
             }
 
-            _context.Attach(Example).State = EntityState.Modified;
-
-            try
+            if(!(await _repo.UpdateExample(Example)))
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ExampleExists(Example.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                return NotFound();
+            }      
 
             return RedirectToPage("./List");
         }
 
         private bool ExampleExists(int id)
         {
-            return _context.Examples.Any(e => e.Id == id);
+            return _repo.ExampleExists(id);
         }
     }
 }

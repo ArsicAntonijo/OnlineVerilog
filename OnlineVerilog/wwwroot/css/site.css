@@ -141,3 +141,21 @@ body {
 .ToRight {
     margin-left: auto;
 }
+/* lekcije css*/
+.naslov {
+    color: cornflowerblue;
+}
+
+pre {
+    background: #f4f4f4;
+    border-left: 4px solid #ccc;
+    padding: 10px;
+    overflow: auto;
+}
+
+code {
+    font-family: monospace;
+    background-color: #eef;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
