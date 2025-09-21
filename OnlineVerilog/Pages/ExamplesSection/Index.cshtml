@@ -8,8 +8,12 @@
 
 <div class="row">
 
-    <div id="mainPanel" class="col-md-10 mainPanel">           
-        <h4 class="blueColor">@Model.Example.Header</h4>
+    <div id="mainPanel" class="col-md-10 mainPanel">   
+        @if (!string.IsNullOrEmpty(Model.NextExampleId))
+        {
+            <span style="float: right;"><a href="/ExamplesSection/@Model.NextExampleId">Следећи задатак</a></span>
+        }
+        <h4 class="blueColor">@Model.Example.Header</h4>        
         <hr />
         <p>@Html.Raw(@Model.Example.Body)</p>
         @if (!string.IsNullOrEmpty(@Model.Example.imagePath))

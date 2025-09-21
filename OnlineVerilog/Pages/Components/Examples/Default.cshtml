@@ -3,7 +3,7 @@
     var distinctSections = Model.Select(m => m.Section).Distinct().ToList();
     //Model.GroupBy(p => p.Section).Distinct().ToList();
 }
-<div id="exampleList">
+<div id="exampleList" style="text-align: left;">
     <h3 style="color:cornflowerblue"><b>Задаци</b></h3>
     <ul class="list-unstyled" style="color:cornflowerblue">
         @foreach (var distinctSection in distinctSections)

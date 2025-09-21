@@ -31,7 +31,7 @@ namespace Data.Repositories
         {
             int total = GetExampleCount();
             var users = GetUsers();
-            return users.Select(me => new ModifiedExample
+            return users.Where(u => u.FirstName != "admin").Select(me => new ModifiedExample
             {
                 Name = me.FirstName,
                 TotalExamples = total,
@@ -101,6 +101,14 @@ namespace Data.Repositories
         public List<SolvedExample> GetSolvedExamples(string uid)
         {
             return _context.SolvedExamples.Where(se => se.UserId == uid).ToList();
+        }
+
+        public string GetNextExampleId(int id)
+        {
+            var example = _context.Examples.Where(e => e.Id > id).OrderBy(e => e.Id).FirstOrDefault();
+            if (example == null) return string.Empty;
+            
+            return example.Id.ToString();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace OnlineVerilog.Service
         public static string RepoOwner = "ArsicAntonijo";
         public static string RepoName = "VeronDumpRepo";
 
-        public static async void PushToGit(string FilePath, string FileContent, string CommitMessage)
+        public static async Task<bool> PushToGit(string FilePath, string FileContent, string CommitMessage)
         {
             var url = $"{GitHubApiUrl}/{RepoOwner}/{RepoName}/contents/{FilePath}";
             try
@@ -32,15 +32,21 @@ namespace OnlineVerilog.Service
                     if (response.IsSuccessStatusCode)
                     {
                         Console.WriteLine("File pushed successfully.");
+                        return true;
                     }
                     else
                     {
                         var responseBody = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"Error: {responseBody}");
+                        return false;
                     }
                 }
             }
-            catch(Exception ex) { Console.WriteLine($"Error uploading to git: {ex.Message}"); }            
+            catch(Exception ex) 
+            { 
+                Console.WriteLine($"Error uploading to git: {ex.Message}");
+                return false;
+            }            
         }
     }
 }
