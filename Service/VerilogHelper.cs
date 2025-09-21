@@ -91,8 +91,8 @@ namespace OnlineVerilog.Service
             string dumpFileContent = File.ReadAllText(tempDumpPath);
             if (GitHubApi.PushToGit(dumpFileName, dumpFileContent, stamp).Result)
             {
-            return $"https://vc.drom.io/?github={GitHubApi.RepoOwner}/{GitHubApi.RepoName}/master/{dumpFileName}";
-        }
+                return $"https://vc.drom.io/?github={GitHubApi.RepoOwner}/{GitHubApi.RepoName}/master/{dumpFileName}";
+            }
             else
             {
                 return string.Empty;

@@ -102,5 +102,13 @@ namespace Data.Repositories
         {
             return _context.SolvedExamples.Where(se => se.UserId == uid).ToList();
         }
+
+        public string GetNextExampleId(int id)
+        {
+            var example = _context.Examples.Where(e => e.Id > id).OrderBy(e => e.Id).FirstOrDefault();
+            if (example == null) return string.Empty;
+            
+            return example.Id.ToString();
+        }
     }
 }

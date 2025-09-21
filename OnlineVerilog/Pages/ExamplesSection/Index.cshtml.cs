@@ -38,6 +38,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
                 {
                     return NotFound();
                 }
+                NextExampleId = _repo.GetNextExampleId(Id);
                 
             }
             return Page();
@@ -46,6 +47,8 @@ namespace OnlineVerilog.Pages.ExamplesSection
         public Example Example { get; set; } = default!;
         [BindProperty]
         public string Solution { get; set; }
+        [BindProperty]
+        public string NextExampleId { get; set; } = string.Empty;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -71,6 +74,8 @@ namespace OnlineVerilog.Pages.ExamplesSection
                     catch (Exception) { }
                 }
             }
+            
+            NextExampleId = _repo.GetNextExampleId(Example.Id);
             return Page();
         }
     }

@@ -21,5 +21,6 @@ namespace Data.Repositories
         void AddSolvedExample(SolvedExample solvedExample);
         List<Example> GetExamples();
         List<SolvedExample> GetSolvedExamples(string? userId);
+        string GetNextExampleId(int id);
     }
 }
