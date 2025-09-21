@@ -153,3 +153,35 @@ testbench.v:6: error: Wrong number of ports. Expecting 3, got 4.
 *****************************************************************
 tastatura
 fali mi dump file output
+
+*****************************************************************
+zica
+module topmodule(intput a,output b);
+	assign b = a;
+endmodule
+
+topmodule.v:1: syntax error topmodule.v:1: Errors in port declarations.
+*****************************************************************
+zica
+
+testbench.v:6: error: reg a; cannot be driven by primitives or continuous assignment. testbench.v:6: error: Output port expression must support continuous assignment. testbench.v:6: : Port 2 (b) of topmodule is connected to a 2 error(s) during elaboration.
+*****************************************************************
+obrnut redosled
+
+obrnut redosled
+module topmodule( 
+    input [7:0] in,
+    output [7:0] out
+);
+    assign out = {in[0],in[1],in[2],in[3],in[4],in[5],in[6],in[7]};
+endmodule
+
+topmodule.v:1: syntax error I give up.
+***************************************************************
+Zica
+
+module topmodule(input a, output b);
+ assing b = a;
+endmodule
+
+topmodule.v:2: syntax error topmodule.v:2: error: Invalid module instantiation

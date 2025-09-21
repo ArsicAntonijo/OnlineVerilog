@@ -1,0 +1,30 @@
+module testbench;
+  reg a;
+  wire y;
+
+  //Design Instance
+  topmodule tm(a, y);
+  
+	initial
+	begin
+		 $display("RESULT\tExpected - Actual");
+
+		a = 1; # 100; 
+		if ( y == 1 ) 
+			$display ("  PASS  \t%d - %d",a,y);
+		else
+			$display ("  FAIL \t%d - %d",a,y);
+
+		a = 0; # 100; 
+		if ( y == 0 ) 
+			$display ("  PASS  \t%d - %d",a,y);
+		else
+			$display ("  FAIL  \t%d - %d",a,y);
+	end
+	  
+  //enabling the wave dump
+  initial begin 
+    $dumpfile("dump.vcd"); $dumpvars;
+  end
+  
+endmodule

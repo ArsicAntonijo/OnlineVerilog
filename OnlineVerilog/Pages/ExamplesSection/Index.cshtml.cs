@@ -53,7 +53,15 @@ namespace OnlineVerilog.Pages.ExamplesSection
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            string output = VerilogHelper.ValidateSolution(Solution);
+            string output = string.Empty;
+            if (string.IsNullOrEmpty(Example.TestBench))
+            {
+                output = "Тестови за овај задатак третнутно нису доступни. Пробај касније...";
+            }
+            else
+            {
+                output = VerilogHelper.ValidateSolution(Solution);
+            }
             ViewData["Output"] = output;
             if (string.IsNullOrEmpty(output))
             {
