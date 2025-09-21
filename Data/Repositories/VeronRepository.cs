@@ -31,7 +31,7 @@ namespace Data.Repositories
         {
             int total = GetExampleCount();
             var users = GetUsers();
-            return users.Select(me => new ModifiedExample
+            return users.Where(u => u.FirstName != "admin").Select(me => new ModifiedExample
             {
                 Name = me.FirstName,
                 TotalExamples = total,
