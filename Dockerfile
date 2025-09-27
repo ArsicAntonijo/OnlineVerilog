@@ -3,7 +3,8 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 RUN apt update && \
-    apt install -y iverilog
+    apt install -y iverilog && \
+    apt install -y curl
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Debug
@@ -21,4 +22,13 @@ RUN dotnet publish "OnlineVerilog.csproj" -c ${BUILD_CONFIGURATION} -o /app/publ
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [ "dotnet", "OnlineVerilog.dll" ]
+
+# Copy scripts
+COPY entrypoint.sh .
+COPY background-task.sh .
+
+# Make scripts executable
+RUN chmod +x entrypoint.sh
+RUN chmod +x background-task.sh
+
+ENTRYPOINT ["./entrypoint.sh"]

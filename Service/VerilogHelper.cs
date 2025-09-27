@@ -186,7 +186,7 @@ namespace OnlineVerilog.Service
                     inputValues += $" input {m.Groups["input"]}";
                 }
             }
-            inputValues += ",";
+            inputValues += string.IsNullOrEmpty(inputValues) ? string.Empty : ",";
 
             output = $"module topmodule({inputValues}{outputValues});\r\rendmodule\r";
 
