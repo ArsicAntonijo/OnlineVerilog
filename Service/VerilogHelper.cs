@@ -147,12 +147,50 @@ namespace OnlineVerilog.Service
                 m = new Regex(@"topmodule.v:(?<line>\d+): Errors in port declarations").Match(v);
                 if (m.Success) output += $"Грешка при декларације порта на линији {m.Groups["line"]}\r\n";
                 
+
+                m = new Regex(@"testbench.v:\d+: error: Wrong number of ports. Expecting (?<expected>\d+), got (?<gotten>\d+).").Match(v);
+                if (m.Success) output += $"Погрешан број унетих улазних/излазних портова. Очекивано {m.Groups["gotten"]}, добијено {m.Groups["expected"]}.\r\n";
+
                 if (string.IsNullOrEmpty(output))
                     return (v.Replace("\n", "\r\n"), true);
                 else
                     return (output, true);
             }
 
+        }
+
+        public string GetSolutionTemplate(string testbench)
+        {
+            if (string.IsNullOrEmpty(testbench)) return string.Empty;
+
+            string output = string.Empty;
+
+            string outputValues = string.Empty;
+            Regex outputRegex = new Regex(@"wire\s*(?<output>(\[\d+:\d+\]\s*)?(\w\s*,?\s*)+);");
+            foreach(Match m in outputRegex.Matches(testbench))
+            {
+                if (m.Success)
+                {
+                    outputValues += string.IsNullOrEmpty(outputValues) ? string.Empty : ",";
+                    outputValues += $" output {m.Groups["output"]}";
+                }
+            }
+
+            // uzmi inpute ovde
+            string inputValues = string.Empty;
+            foreach (Match m in new Regex(@"reg\s*(?<input>(\[\d+:\d+\]\s*)?(\w\s*,?\s*)+);").Matches(testbench))
+            {
+                if (m.Success)
+                {
+                    inputValues += string.IsNullOrEmpty(inputValues) ? string.Empty : ",";
+                    inputValues += $" input {m.Groups["input"]}";
+                }
+            }
+            inputValues += ",";
+
+            output = $"module topmodule({inputValues}{outputValues});\r\rendmodule\r";
+
+            return output;
         }
     }
 }

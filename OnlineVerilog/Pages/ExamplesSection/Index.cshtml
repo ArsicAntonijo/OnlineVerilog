@@ -46,7 +46,7 @@
                 <div class="numbers">
                     <span></span>
                 </div>
-                <textarea asp-for="Solution" class="txtAr" rows="17" cols="200" title="Solution Code" spellcheck="false"></textarea>
+                <textarea asp-for="Solution" class="txtAr" rows="17" cols="200" title="Solution Code" spellcheck="false">@Model.Solution</textarea>
             </div>            
         </form>
         <div class="OutputSection" style="margin-top: 4px">
@@ -94,10 +94,10 @@
     window.onload = function () {
         if (textarea.value === ""){
             textarea.value = "module topmodule;\r\rendmodule";
-
+        }
             const num = textarea.value.split("\n").length;
             numbers.innerHTML = Array(num).fill("<span></span>").join("");
-        }
+        
     }
  
 </script>

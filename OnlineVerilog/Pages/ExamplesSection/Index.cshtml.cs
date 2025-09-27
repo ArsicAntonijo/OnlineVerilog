@@ -39,7 +39,7 @@ namespace OnlineVerilog.Pages.ExamplesSection
                     return NotFound();
                 }
                 NextExampleId = _repo.GetNextExampleId(Id);
-                
+                Solution = _vh.GetSolutionTemplate(Example.TestBench);
             }
             return Page();
         }
