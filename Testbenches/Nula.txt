@@ -1,0 +1,21 @@
+module testbench;
+  wire y;
+
+  // Instantiate the DUT
+  topmodule tm(y);
+
+  initial begin
+    $display("RESULT\tExpected - Actual");
+
+    #10;
+    if (y === 0)
+      $display("PASS\t    0     - %b", y);
+    else
+      $display("FAIL\t    0     - %b", y);
+  end
+
+  initial begin 
+    $dumpfile("dump.vcd"); 
+    $dumpvars;
+  end
+endmodule

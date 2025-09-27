@@ -30,6 +30,10 @@ namespace OnlineVerilog.Service
                 (output, status) = ProcessOutput(Run());
                 vcdromlink = RenameAndUpload();
             }
+            else
+            {
+                (output, _) = ProcessOutput(output, true);
+            }
             if (Directory.Exists(TempDirectory)) { Directory.Delete(TempDirectory, true); }
 
             return (output, vcdromlink, status);
@@ -74,8 +78,24 @@ namespace OnlineVerilog.Service
 
         public static string ValidateSolution(string solution)
         {
-            Match m = new Regex("module(.+?)endmodule", RegexOptions.Singleline).Match(solution);
-            if (!m.Success) { return "Solution must start with \"module\" and finish with \"endmodule\""; }
+            Match m;
+            m = new Regex("module(.+?)endmodule", RegexOptions.Singleline).Match(solution);
+            if (!m.Success) { return "Твоје решење мора да има почетни таг \"module\" и завршни таг \"endmodule\""; }
+
+            m = new Regex(@"module\s+topmodule(.+?)endmodule", RegexOptions.Singleline).Match(solution);
+            if (!m.Success) { return "Због ограничења апликације назив модула мора бити 'topmodule'"; }
+
+            m = new Regex(@"module\s+topmodule\s*\((.+?)?\);(.+?)endmodule", RegexOptions.Singleline).Match(solution);
+            if (!m.Success) { return "Након име модула морате да унесете заграде '(', ')' и ';'"; }
+
+            m = new Regex(@"(input|output)", RegexOptions.Singleline).Match(solution);
+            if (!m.Success) { return "Морате унети улазне и/или излазне параметре модула"; }
+
+            m = new Regex(@"assign\s+<?=", RegexOptions.Singleline).Match(solution);
+            if (m.Success) { return "Након 'assign' морате унети променљиву кој треба да прихвати вредност са десне стране"; }
+
+            m = new Regex(@"(input|output)", RegexOptions.Singleline).Match(solution);
+            if (!m.Success) { return "Морате унети улазне и/или излазне параметре модула"; }
 
             return string.Empty;
         }
@@ -99,20 +119,78 @@ namespace OnlineVerilog.Service
             }
         }
 
-        private (string, bool) ProcessOutput(string v)
+        private (string, bool) ProcessOutput(string v, bool isCompileError = false)
         {
-            int failedTests = 0;
-            var e = new Regex("\\sFAIL\\s+(?<expected>\\w+)\\s+-\\s+(?<inputs>\\w+)").Matches(v);
-            if (e.Count == 0) return ("Задатак је успешно решен :)", true);
+            if (!isCompileError)
+            {
+                int failedTests = 0;
+                var e = new Regex("\\sFAIL\\s+(?<expected>\\w+)\\s+-\\s+(?<inputs>\\w+)").Matches(v);
+                if (e.Count == 0) return ("Задатак је успешно решен :)", true);
+
+                string output = string.Empty;
+                foreach (Match m in e)
+                {
+                    output += string.Format(" * Ако на улаз имамо: {1} на излазу треда да се добије {0}\r\n", m.Groups["expected"].Value, m.Groups["inputs"]);
+                    failedTests++;
+                }
+                output = "Код је пао на " + failedTests + " ситуацијама:\r\n" + output;
+                return (output, false);
+            }
+            else
+            {
+                string output = string.Empty;
+                Match m;
+
+                m = new Regex(@"topmodule.v:(?<line>\d+): syntax error").Match(v);
+                if (m.Success) output += $"Синтаксичка грешка на линији {m.Groups["line"]}\r\n";
+
+                m = new Regex(@"topmodule.v:(?<line>\d+): Errors in port declarations").Match(v);
+                if (m.Success) output += $"Грешка при декларације порта на линији {m.Groups["line"]}\r\n";
+                
+
+                m = new Regex(@"testbench.v:\d+: error: Wrong number of ports. Expecting (?<expected>\d+), got (?<gotten>\d+).").Match(v);
+                if (m.Success) output += $"Погрешан број унетих улазних/излазних портова. Очекивано {m.Groups["gotten"]}, добијено {m.Groups["expected"]}.\r\n";
+
+                if (string.IsNullOrEmpty(output))
+                    return (v.Replace("\n", "\r\n"), true);
+                else
+                    return (output, true);
+            }
+
+        }
+
+        public string GetSolutionTemplate(string testbench)
+        {
+            if (string.IsNullOrEmpty(testbench)) return string.Empty;
 
             string output = string.Empty;
-            foreach (Match m in e)
+
+            string outputValues = string.Empty;
+            Regex outputRegex = new Regex(@"wire\s*(?<output>(\[\d+:\d+\]\s*)?(\w\s*,?\s*)+);");
+            foreach(Match m in outputRegex.Matches(testbench))
             {
-                output += string.Format(" * Ако на улаз имамо: {1} на излазу треда да се добије {0}\r\n", m.Groups["expected"].Value, m.Groups["inputs"]);
-                failedTests++;
+                if (m.Success)
+                {
+                    outputValues += string.IsNullOrEmpty(outputValues) ? string.Empty : ",";
+                    outputValues += $" output {m.Groups["output"]}";
+                }
             }
-            output = "Код је пао на " + failedTests + " ситуацијама:\r\n" + output;
-            return (output, false);
+
+            // uzmi inpute ovde
+            string inputValues = string.Empty;
+            foreach (Match m in new Regex(@"reg\s*(?<input>(\[\d+:\d+\]\s*)?(\w\s*,?\s*)+);").Matches(testbench))
+            {
+                if (m.Success)
+                {
+                    inputValues += string.IsNullOrEmpty(inputValues) ? string.Empty : ",";
+                    inputValues += $" input {m.Groups["input"]}";
+                }
+            }
+            inputValues += ",";
+
+            output = $"module topmodule({inputValues}{outputValues});\r\rendmodule\r";
+
+            return output;
         }
     }
 }
