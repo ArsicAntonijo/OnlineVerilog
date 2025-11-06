@@ -123,17 +123,19 @@ namespace OnlineVerilog.Service
         {
             if (!isCompileError)
             {
+                if (string.IsNullOrEmpty(v) || !v.Contains("FAIL")) return ("Задатак је успешно решен :)", true);
+                
                 int failedTests = 0;
-                var e = new Regex("\\sFAIL\\s+(?<expected>\\w+)\\s+-\\s+(?<inputs>\\w+)").Matches(v);
-                if (e.Count == 0) return ("Задатак је успешно решен :)", true);
+                var e = new Regex(@"\sFAIL\s+(?<expected>[\w\s]+)\s*-\s+(?<inputs>[\w\s]+)\n").Matches(v);
+               // if (e.Count == 0) return ("Задатак је успешно решен :)", true);
 
-                string output = string.Empty;
+                string output = "Неисправно решење!\r\n";
                 foreach (Match m in e)
                 {
-                    output += string.Format(" * Ако на улаз имамо: {1} на излазу треда да се добије {0}\r\n", m.Groups["expected"].Value, m.Groups["inputs"]);
+                    output += string.Format(" * Ако на улаз имамо: {0} на излазу треда да се добије {1}\r\n", m.Groups["expected"].Value, m.Groups["inputs"]);
                     failedTests++;
                 }
-                output = "Код је пао на " + failedTests + " ситуацијама:\r\n" + output;
+
                 return (output, false);
             }
             else
